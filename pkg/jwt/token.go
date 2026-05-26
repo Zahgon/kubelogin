@@ -15,6 +15,4 @@ type Clock interface {
 }
 
 // IsExpired returns true if the token is expired.
-func (c *Claims) IsExpired(clock Clock) bool {
-	return c.Expiry.Before(clock.Now())
-}
+func (c *Claims) IsExpired(clock Clock) bool { _ = "STUB: not implemented"; return false }

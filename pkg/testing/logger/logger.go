@@ -1,15 +1,11 @@
 package logger
 
 import (
-	"fmt"
-
 	"github.com/int128/kubelogin/pkg/infrastructure/logger"
 	"github.com/spf13/pflag"
 )
 
-func New(t testingLogger) *Logger {
-	return &Logger{t: t}
-}
+func New(t testingLogger) *Logger { _ = "STUB: not implemented"; return nil }
 
 type testingLogger interface {
 	Logf(format string, v ...interface{})
@@ -21,34 +17,24 @@ type Logger struct {
 	maxLevel int
 }
 
-func (l *Logger) AddFlags(f *pflag.FlagSet) {
-	f.IntVarP(&l.maxLevel, "v", "v", 0, "dummy flag used in the tests")
-}
+func (l *Logger) AddFlags(f *pflag.FlagSet) { _ = "STUB: not implemented"; return }
 
-func (l *Logger) Printf(format string, args ...interface{}) {
-	l.t.Logf(format, args...)
-}
+func (l *Logger) Printf(format string, args ...interface{}) { _ = "STUB: not implemented"; return }
 
 func (l *Logger) V(level int) logger.Verbose {
-	if l.IsEnabled(level) {
-		return &verbose{l.t, level}
-	}
-	return &noopVerbose{}
+	_ = "STUB: not implemented"
+	return *new(logger.Verbose)
 }
 
-func (l *Logger) IsEnabled(level int) bool {
-	return level <= l.maxLevel
-}
+func (l *Logger) IsEnabled(level int) bool { _ = "STUB: not implemented"; return false }
 
 type verbose struct {
 	t     testingLogger
 	level int
 }
 
-func (v *verbose) Infof(format string, args ...interface{}) {
-	v.t.Logf(fmt.Sprintf("I%d] ", v.level)+format, args...)
-}
+func (v *verbose) Infof(format string, args ...interface{}) { _ = "STUB: not implemented"; return }
 
 type noopVerbose struct{}
 
-func (*noopVerbose) Infof(string, ...interface{}) {}
+func (*noopVerbose) Infof(string, ...interface{}) { _ = "STUB: not implemented"; return }

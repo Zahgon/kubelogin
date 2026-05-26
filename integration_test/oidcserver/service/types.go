@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"net/url"
 
 	"github.com/int128/kubelogin/integration_test/oidcserver/testconfig"
@@ -103,6 +102,4 @@ type ErrorResponse struct {
 	Description string `json:"error_description"`
 }
 
-func (err *ErrorResponse) Error() string {
-	return fmt.Sprintf("%s(%s)", err.Code, err.Description)
-}
+func (err *ErrorResponse) Error() string { _ = "STUB: not implemented"; return "" }

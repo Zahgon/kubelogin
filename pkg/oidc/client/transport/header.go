@@ -14,8 +14,6 @@ type WithHeader struct {
 }
 
 func (t *WithHeader) RoundTrip(req *http.Request) (*http.Response, error) {
-	for key, value := range t.RequestHeaders {
-		req.Header.Set(key, value)
-	}
-	return t.Base.RoundTrip(req)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

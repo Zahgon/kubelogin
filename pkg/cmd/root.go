@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/int128/kubelogin/pkg/infrastructure/logger"
-	"github.com/int128/kubelogin/pkg/kubeconfig"
 	"github.com/int128/kubelogin/pkg/usecases/standalone"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -29,46 +26,11 @@ type rootOptions struct {
 	authenticationOptions authenticationOptions
 }
 
-func (o *rootOptions) addFlags(f *pflag.FlagSet) {
-	f.StringVar(&o.Kubeconfig, "kubeconfig", "", "Path to the kubeconfig file")
-	f.StringVar(&o.Context, "context", "", "Name of the kubeconfig context to use")
-	f.StringVar(&o.User, "user", "", "Name of the kubeconfig user to use. Prior to --context")
-	o.tlsOptions.addFlags(f)
-	o.authenticationOptions.addFlags(f)
-}
+func (o *rootOptions) addFlags(f *pflag.FlagSet) { _ = "STUB: not implemented"; return }
 
 type Root struct {
 	Standalone standalone.Interface
 	Logger     logger.Interface
 }
 
-func (cmd *Root) New() *cobra.Command {
-	var o rootOptions
-	c := &cobra.Command{
-		Use:   "kubelogin",
-		Short: "Log in to the OpenID Connect provider",
-		Long:  rootDescription,
-		Args:  cobra.NoArgs,
-		RunE: func(c *cobra.Command, _ []string) error {
-			grantOptionSet, err := o.authenticationOptions.grantOptionSet()
-			if err != nil {
-				return fmt.Errorf("invalid option: %w", err)
-			}
-			in := standalone.Input{
-				KubeconfigFilename: o.Kubeconfig,
-				KubeconfigContext:  kubeconfig.ContextName(o.Context),
-				KubeconfigUser:     kubeconfig.UserName(o.User),
-				GrantOptionSet:     grantOptionSet,
-				TLSClientConfig:    o.tlsOptions.tlsClientConfig(),
-			}
-			if err := cmd.Standalone.Do(c.Context(), in); err != nil {
-				return fmt.Errorf("login: %w", err)
-			}
-			return nil
-		},
-	}
-	c.Flags().SortFlags = false
-	o.addFlags(c.Flags())
-	cmd.Logger.AddFlags(c.PersistentFlags())
-	return c
-}
+func (cmd *Root) New() *cobra.Command { _ = "STUB: not implemented"; return nil }

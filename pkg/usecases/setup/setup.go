@@ -3,9 +3,7 @@ package setup
 
 import (
 	"context"
-	"fmt"
 	"strconv"
-	"strings"
 	"text/template"
 
 	_ "embed"
@@ -52,37 +50,4 @@ type Input struct {
 	ChangedFlags    []string
 }
 
-func (u Setup) Do(ctx context.Context, in Input) error {
-	u.Logger.Printf("Authentication in progress...")
-	out, err := u.Authentication.Do(ctx, authentication.Input{
-		Provider: oidc.Provider{
-			IssuerURL:      in.IssuerURL,
-			ClientID:       in.ClientID,
-			ClientSecret:   in.ClientSecret,
-			RedirectURL:    in.RedirectURL,
-			ExtraScopes:    in.ExtraScopes,
-			PKCEMethod:     in.PKCEMethod,
-			UseAccessToken: in.UseAccessToken,
-			RequestHeaders: in.RequestHeaders,
-		},
-		GrantOptionSet:  in.GrantOptionSet,
-		TLSClientConfig: in.TLSClientConfig,
-	})
-	if err != nil {
-		return fmt.Errorf("authentication error: %w", err)
-	}
-	idTokenClaims, err := out.TokenSet.DecodeWithoutVerify()
-	if err != nil {
-		return fmt.Errorf("you got an invalid token: %w", err)
-	}
-
-	var b strings.Builder
-	if err := setupTemplate.Execute(&b, map[string]any{
-		"IDTokenPrettyJSON": idTokenClaims.Pretty,
-		"Flags":             in.ChangedFlags,
-	}); err != nil {
-		return fmt.Errorf("render the template: %w", err)
-	}
-	u.Logger.Printf("%s", b.String())
-	return nil
-}
+func (u Setup) Do(ctx context.Context, in Input) error { _ = "STUB: not implemented"; return nil }

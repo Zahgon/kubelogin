@@ -1,7 +1,6 @@
 package jwt
 
 import (
-	"crypto/rand"
 	"crypto/rsa"
 	"testing"
 
@@ -10,13 +9,7 @@ import (
 
 var PrivateKey = generateKey(1024)
 
-func generateKey(b int) *rsa.PrivateKey {
-	k, err := rsa.GenerateKey(rand.Reader, b)
-	if err != nil {
-		panic(err)
-	}
-	return k
-}
+func generateKey(b int) *rsa.PrivateKey { _ = "STUB: not implemented"; return nil }
 
 type Claims struct {
 	jwt.RegisteredClaims
@@ -28,16 +21,6 @@ type Claims struct {
 	EmailVerified bool     `json:"email_verified,omitempty"`
 }
 
-func Encode(t *testing.T, claims Claims) string {
-	s, err := jwt.NewWithClaims(jwt.SigningMethodRS256, claims).SignedString(PrivateKey)
-	if err != nil {
-		t.Fatalf("could not encode JWT: %s", err)
-	}
-	return s
-}
+func Encode(t *testing.T, claims Claims) string { _ = "STUB: not implemented"; return "" }
 
-func EncodeF(t *testing.T, mutation func(*Claims)) string {
-	var claims Claims
-	mutation(&claims)
-	return Encode(t, claims)
-}
+func EncodeF(t *testing.T, mutation func(*Claims)) string { _ = "STUB: not implemented"; return "" }

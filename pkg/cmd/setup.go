@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	_ "embed"
 
 	"github.com/int128/kubelogin/pkg/usecases/setup"
@@ -24,18 +22,7 @@ type setupOptions struct {
 	authenticationOptions authenticationOptions
 }
 
-func (o *setupOptions) addFlags(f *pflag.FlagSet) {
-	f.StringVar(&o.IssuerURL, "oidc-issuer-url", "", "Issuer URL of the provider")
-	f.StringVar(&o.ClientID, "oidc-client-id", "", "Client ID of the provider")
-	f.StringVar(&o.ClientSecret, "oidc-client-secret", "", "Client secret of the provider")
-	f.StringVar(&o.RedirectURL, "oidc-redirect-url", "", "[authcode, authcode-keyboard] Redirect URL")
-	f.StringSliceVar(&o.ExtraScopes, "oidc-extra-scope", nil, "Scopes to request to the provider")
-	f.BoolVar(&o.UseAccessToken, "oidc-use-access-token", false, "Instead of using the id_token, use the access_token to authenticate to Kubernetes")
-	f.StringToStringVar(&o.RequestHeaders, "oidc-request-header", nil, "HTTP headers to send with an authentication request")
-	o.tlsOptions.addFlags(f)
-	o.pkceOptions.addFlags(f)
-	o.authenticationOptions.addFlags(f)
-}
+func (o *setupOptions) addFlags(f *pflag.FlagSet) { _ = "STUB: not implemented"; return }
 
 type Setup struct {
 	Setup setup.Interface
@@ -44,59 +31,4 @@ type Setup struct {
 //go:embed setup.md
 var setupLongDescription string
 
-func (cmd *Setup) New() *cobra.Command {
-	var o setupOptions
-	c := &cobra.Command{
-		Use:   "setup",
-		Short: "Show the setup instruction",
-		Long:  setupLongDescription,
-		Args:  cobra.NoArgs,
-		RunE: func(c *cobra.Command, _ []string) error {
-			var changedFlags []string
-			c.Flags().VisitAll(func(f *pflag.Flag) {
-				if !f.Changed {
-					return
-				}
-				if sliceValue, ok := f.Value.(pflag.SliceValue); ok {
-					for _, v := range sliceValue.GetSlice() {
-						changedFlags = append(changedFlags, fmt.Sprintf("--%s=%s", f.Name, v))
-					}
-					return
-				}
-				changedFlags = append(changedFlags, fmt.Sprintf("--%s=%s", f.Name, f.Value))
-			})
-
-			grantOptionSet, err := o.authenticationOptions.grantOptionSet()
-			if err != nil {
-				return fmt.Errorf("setup: %w", err)
-			}
-			pkceMethod, err := o.pkceOptions.pkceMethod()
-			if err != nil {
-				return fmt.Errorf("setup: %w", err)
-			}
-			in := setup.Input{
-				IssuerURL:       o.IssuerURL,
-				ClientID:        o.ClientID,
-				ClientSecret:    o.ClientSecret,
-				RedirectURL:     o.RedirectURL,
-				ExtraScopes:     o.ExtraScopes,
-				UseAccessToken:  o.UseAccessToken,
-				RequestHeaders:  o.RequestHeaders,
-				PKCEMethod:      pkceMethod,
-				GrantOptionSet:  grantOptionSet,
-				TLSClientConfig: o.tlsOptions.tlsClientConfig(),
-				ChangedFlags:    changedFlags,
-			}
-			if in.IssuerURL == "" || in.ClientID == "" {
-				return c.Help()
-			}
-			if err := cmd.Setup.Do(c.Context(), in); err != nil {
-				return fmt.Errorf("setup: %w", err)
-			}
-			return nil
-		},
-	}
-	c.Flags().SortFlags = false
-	o.addFlags(c.Flags())
-	return c
-}
+func (cmd *Setup) New() *cobra.Command { _ = "STUB: not implemented"; return nil }

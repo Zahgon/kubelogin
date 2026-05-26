@@ -2,11 +2,6 @@ package keypair
 
 import (
 	"crypto/tls"
-	"crypto/x509"
-	"encoding/base64"
-	"io"
-	"os"
-	"strings"
 )
 
 // KeyPair represents a pair of certificate and key.
@@ -31,35 +26,6 @@ var Server = KeyPair{
 	TLSConfig:    newTLSConfig("keypair/testdata/ca.crt"),
 }
 
-func readAsBase64(name string) string {
-	f, err := os.Open(name)
-	if err != nil {
-		panic(err)
-	}
-	defer func() {
-		if err := f.Close(); err != nil {
-			panic(err)
-		}
-	}()
-	var s strings.Builder
-	e := base64.NewEncoder(base64.StdEncoding, &s)
-	if _, err := io.Copy(e, f); err != nil {
-		panic(err)
-	}
-	if err := e.Close(); err != nil {
-		panic(err)
-	}
-	return s.String()
-}
+func readAsBase64(name string) string { _ = "STUB: not implemented"; return "" }
 
-func newTLSConfig(name string) *tls.Config {
-	b, err := os.ReadFile(name)
-	if err != nil {
-		panic(err)
-	}
-	p := x509.NewCertPool()
-	if !p.AppendCertsFromPEM(b) {
-		panic("could not append the CA cert")
-	}
-	return &tls.Config{RootCAs: p}
-}
+func newTLSConfig(name string) *tls.Config { _ = "STUB: not implemented"; return nil }

@@ -2,11 +2,9 @@ package clean
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/google/wire"
 	"github.com/int128/kubelogin/pkg/infrastructure/logger"
-	"github.com/int128/kubelogin/pkg/tokencache"
 	"github.com/int128/kubelogin/pkg/tokencache/repository"
 )
 
@@ -29,19 +27,6 @@ type Clean struct {
 	Logger               logger.Interface
 }
 
-func (u *Clean) Do(ctx context.Context, in Input) error {
-	u.Logger.V(1).Infof("Deleting the token cache")
+func (u *Clean) Do(ctx context.Context, in Input) error { _ = "STUB: not implemented"; return nil }
 
-	if err := u.TokenCacheRepository.DeleteAll(tokencache.Config{Directory: in.TokenCacheDir, Storage: tokencache.StorageDisk}); err != nil {
-		return fmt.Errorf("delete the token cache from %s: %w", in.TokenCacheDir, err)
-	}
-	u.Logger.Printf("Deleted the token cache from %s", in.TokenCacheDir)
-
-	if err := u.TokenCacheRepository.DeleteAll(tokencache.Config{Directory: in.TokenCacheDir, Storage: tokencache.StorageKeyring}); err != nil {
-		// Do not return an error because the keyring may not be available.
-		u.Logger.Printf("Could not delete the token cache from the keyring: %s", err)
-	} else {
-		u.Logger.Printf("Deleted the token cache from the keyring")
-	}
-	return nil
-}
+// Do not return an error because the keyring may not be available.
